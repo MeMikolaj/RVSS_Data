@@ -1,0 +1,38 @@
+import cv2
+import numpy as np
+
+def equalize_image(image):
+    # Convert image to LAB color space
+    lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+    
+    # Split the LAB image into L, A, and B channels
+    l_channel, a_channel, b_channel = cv2.split(lab_image)
+    
+    # Apply histogram equalization to the L channel
+    l_channel_equalized = cv2.equalizeHist(l_channel)
+    
+    # Merge the equalized L channel with the original A and B channels
+    equalized_image = cv2.merge([l_channel_equalized, a_channel, b_channel])
+    
+    # Convert the equalized image back to BGR color space
+    equalized_image_bgr = cv2.cvtColor(equalized_image, cv2.COLOR_LAB2BGR)
+    
+    return equalized_image_bgr
+
+# Load the images
+image1 = cv2.imread('image1.jpg')
+image2 = cv2.imread('image2.jpg')
+
+# Equalize the lighting conditions for each image
+equalized_image1 = equalize_image(image1)
+equalized_image2 = equalize_image(image2)
+
+# Display the original and equalized images
+cv2.imshow('Image 1', image1)
+cv2.imshow('Equalized Image 1', equalized_image1)
+
+cv2.imshow('Image 2', image2)
+cv2.imshow('Equalized Image 2', equalized_image2)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
